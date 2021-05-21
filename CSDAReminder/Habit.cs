@@ -22,7 +22,7 @@ namespace CSDAReminder
         }
         public override String ToString()
         {
-            return name + " pukul " + habitTime.ToShortTimeString();
+            return name;
         }
     }
 }

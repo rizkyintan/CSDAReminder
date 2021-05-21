@@ -87,6 +87,9 @@ namespace CSDAReminder
             this.jadwalTimer = new System.Windows.Forms.Timer(this.components);
             this.habitTimer = new System.Windows.Forms.Timer(this.components);
             this.lstHabit = new System.Windows.Forms.ListBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.label6 = new System.Windows.Forms.Label();
             this.tabs.SuspendLayout();
             this.tabToDoList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -114,7 +117,7 @@ namespace CSDAReminder
             // 
             // tabToDoList
             // 
-            this.tabToDoList.BackColor = System.Drawing.Color.PeachPuff;
+            this.tabToDoList.BackColor = System.Drawing.Color.Bisque;
             this.tabToDoList.Controls.Add(this.pictureBox1);
             this.tabToDoList.Controls.Add(this.btnHelpTodo);
             this.tabToDoList.Controls.Add(this.btnTodoAdd);
@@ -182,7 +185,8 @@ namespace CSDAReminder
             // 
             // tabReminder
             // 
-            this.tabReminder.BackColor = System.Drawing.Color.PeachPuff;
+            this.tabReminder.BackColor = System.Drawing.Color.Bisque;
+            this.tabReminder.Controls.Add(this.label6);
             this.tabReminder.Controls.Add(this.btnHelpReminder);
             this.tabReminder.Controls.Add(this.btnReminderDelete);
             this.tabReminder.Controls.Add(this.btnReminderAdd);
@@ -259,15 +263,15 @@ namespace CSDAReminder
             this.clbReminder.CheckOnClick = true;
             this.clbReminder.Font = new System.Drawing.Font("Futura Bk BT", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.clbReminder.FormattingEnabled = true;
-            this.clbReminder.Location = new System.Drawing.Point(22, 20);
+            this.clbReminder.Location = new System.Drawing.Point(22, 72);
             this.clbReminder.Name = "clbReminder";
-            this.clbReminder.Size = new System.Drawing.Size(550, 446);
+            this.clbReminder.Size = new System.Drawing.Size(550, 394);
             this.clbReminder.TabIndex = 2;
             this.clbReminder.SelectedIndexChanged += new System.EventHandler(this.clbReminder_SelectedIndexChanged);
             // 
             // tabJadwal
             // 
-            this.tabJadwal.BackColor = System.Drawing.Color.PeachPuff;
+            this.tabJadwal.BackColor = System.Drawing.Color.Bisque;
             this.tabJadwal.Controls.Add(this.textBox1);
             this.tabJadwal.Controls.Add(this.cmbJadwalRemove);
             this.tabJadwal.Controls.Add(this.clbHarian);
@@ -409,6 +413,8 @@ namespace CSDAReminder
             // tabHabit
             // 
             this.tabHabit.BackColor = System.Drawing.Color.Bisque;
+            this.tabHabit.Controls.Add(this.listBox1);
+            this.tabHabit.Controls.Add(this.label5);
             this.tabHabit.Controls.Add(this.lstHabit);
             this.tabHabit.Controls.Add(this.label3);
             this.tabHabit.Controls.Add(this.tbHabitStatus);
@@ -439,9 +445,11 @@ namespace CSDAReminder
             // 
             // tbHabitStatus
             // 
-            this.tbHabitStatus.Location = new System.Drawing.Point(581, 111);
+            this.tbHabitStatus.Font = new System.Drawing.Font("Futura Md BT", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.tbHabitStatus.Location = new System.Drawing.Point(787, 46);
+            this.tbHabitStatus.Multiline = true;
             this.tbHabitStatus.Name = "tbHabitStatus";
-            this.tbHabitStatus.Size = new System.Drawing.Size(189, 31);
+            this.tbHabitStatus.Size = new System.Drawing.Size(186, 42);
             this.tbHabitStatus.TabIndex = 25;
             this.tbHabitStatus.Text = "Habit Belum Aktif";
             this.tbHabitStatus.TextChanged += new System.EventHandler(this.tbHabitStatus_TextChanged);
@@ -452,7 +460,7 @@ namespace CSDAReminder
             this.lblTimeHabit2.BackColor = System.Drawing.Color.DarkTurquoise;
             this.lblTimeHabit2.Font = new System.Drawing.Font("DS-Digital", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimeHabit2.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblTimeHabit2.Location = new System.Drawing.Point(906, 236);
+            this.lblTimeHabit2.Location = new System.Drawing.Point(822, 142);
             this.lblTimeHabit2.Name = "lblTimeHabit2";
             this.lblTimeHabit2.Size = new System.Drawing.Size(87, 59);
             this.lblTimeHabit2.TabIndex = 24;
@@ -462,11 +470,11 @@ namespace CSDAReminder
             // 
             this.lblTimeHabit.AutoSize = true;
             this.lblTimeHabit.BackColor = System.Drawing.Color.PowderBlue;
-            this.lblTimeHabit.Font = new System.Drawing.Font("DS-Digital", 72F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblTimeHabit.Font = new System.Drawing.Font("DS-Digital", 48F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.lblTimeHabit.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
-            this.lblTimeHabit.Location = new System.Drawing.Point(579, 209);
+            this.lblTimeHabit.Location = new System.Drawing.Point(583, 122);
             this.lblTimeHabit.Name = "lblTimeHabit";
-            this.lblTimeHabit.Size = new System.Drawing.Size(321, 118);
+            this.lblTimeHabit.Size = new System.Drawing.Size(216, 79);
             this.lblTimeHabit.TabIndex = 23;
             this.lblTimeHabit.Text = "22:22";
             this.lblTimeHabit.Click += new System.EventHandler(this.lblTimeHabit_Click);
@@ -684,6 +692,46 @@ namespace CSDAReminder
             this.lstHabit.Size = new System.Drawing.Size(481, 172);
             this.lstHabit.TabIndex = 28;
             // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.BackColor = System.Drawing.Color.Firebrick;
+            this.label5.Font = new System.Drawing.Font("Futura Md BT", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label5.Location = new System.Drawing.Point(585, 248);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(149, 29);
+            this.label5.TabIndex = 30;
+            this.label5.Text = "Waktu Habit";
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.ItemHeight = 24;
+            this.listBox1.Items.AddRange(new object[] {
+            "Sarapan - 08:00",
+            "Mandi pagi - 09:00",
+            "Makan siang - 11:30",
+            "Olahraga rutin - 15:00",
+            "Mandi sore - 17:00",
+            "Makan sore - 18:30"});
+            this.listBox1.Location = new System.Drawing.Point(581, 290);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.Size = new System.Drawing.Size(353, 172);
+            this.listBox1.TabIndex = 31;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.BackColor = System.Drawing.Color.LightCoral;
+            this.label6.Font = new System.Drawing.Font("Futura Md BT", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label6.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label6.Location = new System.Drawing.Point(26, 30);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(157, 29);
+            this.label6.TabIndex = 13;
+            this.label6.Text = "List Reminder";
+            // 
             // CSDAReminder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -777,5 +825,8 @@ namespace CSDAReminder
         private System.Windows.Forms.TextBox tbHabitStatus;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox lstHabit;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.Label label6;
     }
 }

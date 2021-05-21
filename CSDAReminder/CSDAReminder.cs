@@ -413,7 +413,7 @@ namespace CSDAReminder
             DateTime time2 = new DateTime(time.Year, time.Month, time.Day, 9, 0, 0);
             DateTime time3 = new DateTime(time.Year, time.Month, time.Day, 11, 30, 0);
             DateTime time4 = new DateTime(time.Year, time.Month, time.Day, 15, 0, 0);
-            DateTime time5 = new DateTime(time.Year, time.Month, time.Day, 17, 50, 0);
+            DateTime time5 = new DateTime(time.Year, time.Month, time.Day, 17, 0, 0);
             DateTime time6 = new DateTime(time.Year, time.Month, time.Day, 18, 30, 0);
             //DateTime time2 = DateTime.ParseExact("09:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             
@@ -582,7 +582,8 @@ namespace CSDAReminder
 
         private void btnHelpHabit_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("");
+            MessageBox.Show("Centang box pada 'List Habit' untuk memilih habit yang akan diaktifkan, kemudian tekan tombol 'Aktifkan Habit'. \n" +
+                "Habit akan muncul pada waktu yang sudah ditentukan oleh program.", "Help");
         }
 
         private void btnHelpTodo_Click(object sender, EventArgs e)
@@ -663,7 +664,7 @@ namespace CSDAReminder
             MessageBox.Show("Tuliskan deskripsi jadwal dan pilih tanggal dan waktu nya kemudian tekan tombol 'Add'." + "\n" +
                            "Jadwal akan muncul pada box 'Jadwal Minggu Ini', ketika notifikasi muncul jadwal akan hilang dengan sendirinya." + "\n" +
                            "Box 'Jadwal Hari Ini' menunjukkan jadwal yang terdapat pada hari pada hari itu. Centang jadwal untuk menghapus jadwal yang sudah dilakukan." + "\n" +
-                           "Pilih jadwal pada kolom 'Delete' dan tekan delete untuk menghapus jadwal." + "Help");
+                           "Pilih jadwal pada kolom 'Delete' dan tekan delete untuk menghapus jadwal.", "Help");
 
         }
 
