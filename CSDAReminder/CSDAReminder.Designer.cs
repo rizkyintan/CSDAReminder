@@ -60,10 +60,11 @@ namespace CSDAReminder
             this.timePickerJadwal = new System.Windows.Forms.DateTimePicker();
             this.monthCalendarJadwal = new System.Windows.Forms.MonthCalendar();
             this.tabHabit = new System.Windows.Forms.TabPage();
+            this.label3 = new System.Windows.Forms.Label();
+            this.tbHabitStatus = new System.Windows.Forms.TextBox();
             this.lblTimeHabit2 = new System.Windows.Forms.Label();
             this.lblTimeHabit = new System.Windows.Forms.Label();
-            this.btnHabitDelete = new System.Windows.Forms.Button();
-            this.cbHabit = new System.Windows.Forms.ComboBox();
+            this.btnHabitActive = new System.Windows.Forms.Button();
             this.btnHelpHabit = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.clbHabit = new System.Windows.Forms.CheckedListBox();
@@ -85,6 +86,7 @@ namespace CSDAReminder
             this.dayTimer = new System.Windows.Forms.Timer(this.components);
             this.jadwalTimer = new System.Windows.Forms.Timer(this.components);
             this.habitTimer = new System.Windows.Forms.Timer(this.components);
+            this.lstHabit = new System.Windows.Forms.ListBox();
             this.tabs.SuspendLayout();
             this.tabToDoList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -407,10 +409,12 @@ namespace CSDAReminder
             // tabHabit
             // 
             this.tabHabit.BackColor = System.Drawing.Color.Bisque;
+            this.tabHabit.Controls.Add(this.lstHabit);
+            this.tabHabit.Controls.Add(this.label3);
+            this.tabHabit.Controls.Add(this.tbHabitStatus);
             this.tabHabit.Controls.Add(this.lblTimeHabit2);
             this.tabHabit.Controls.Add(this.lblTimeHabit);
-            this.tabHabit.Controls.Add(this.btnHabitDelete);
-            this.tabHabit.Controls.Add(this.cbHabit);
+            this.tabHabit.Controls.Add(this.btnHabitActive);
             this.tabHabit.Controls.Add(this.btnHelpHabit);
             this.tabHabit.Controls.Add(this.label4);
             this.tabHabit.Controls.Add(this.clbHabit);
@@ -420,6 +424,27 @@ namespace CSDAReminder
             this.tabHabit.TabIndex = 3;
             this.tabHabit.Text = "Habit";
             this.tabHabit.Click += new System.EventHandler(this.tabHabit_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.BackColor = System.Drawing.Color.Firebrick;
+            this.label3.Font = new System.Drawing.Font("Futura Md BT", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.label3.Location = new System.Drawing.Point(19, 248);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(324, 29);
+            this.label3.TabIndex = 27;
+            this.label3.Text = "Habit Yang Harus Dilakukan";
+            // 
+            // tbHabitStatus
+            // 
+            this.tbHabitStatus.Location = new System.Drawing.Point(581, 111);
+            this.tbHabitStatus.Name = "tbHabitStatus";
+            this.tbHabitStatus.Size = new System.Drawing.Size(189, 31);
+            this.tbHabitStatus.TabIndex = 25;
+            this.tbHabitStatus.Text = "Habit Belum Aktif";
+            this.tbHabitStatus.TextChanged += new System.EventHandler(this.tbHabitStatus_TextChanged);
             // 
             // lblTimeHabit2
             // 
@@ -446,23 +471,16 @@ namespace CSDAReminder
             this.lblTimeHabit.Text = "22:22";
             this.lblTimeHabit.Click += new System.EventHandler(this.lblTimeHabit_Click);
             // 
-            // btnHabitDelete
+            // btnHabitActive
             // 
-            this.btnHabitDelete.Location = new System.Drawing.Point(583, 96);
-            this.btnHabitDelete.Name = "btnHabitDelete";
-            this.btnHabitDelete.Size = new System.Drawing.Size(189, 42);
-            this.btnHabitDelete.TabIndex = 19;
-            this.btnHabitDelete.Text = "Delete";
-            this.btnHabitDelete.UseVisualStyleBackColor = true;
-            // 
-            // cbHabit
-            // 
-            this.cbHabit.FormattingEnabled = true;
-            this.cbHabit.Location = new System.Drawing.Point(583, 46);
-            this.cbHabit.Name = "cbHabit";
-            this.cbHabit.Size = new System.Drawing.Size(390, 32);
-            this.cbHabit.TabIndex = 18;
-            this.cbHabit.Text = "Pilih habit";
+            this.btnHabitActive.BackColor = System.Drawing.Color.Yellow;
+            this.btnHabitActive.Location = new System.Drawing.Point(581, 46);
+            this.btnHabitActive.Name = "btnHabitActive";
+            this.btnHabitActive.Size = new System.Drawing.Size(189, 42);
+            this.btnHabitActive.TabIndex = 19;
+            this.btnHabitActive.Text = "Aktifkan Habit";
+            this.btnHabitActive.UseVisualStyleBackColor = false;
+            this.btnHabitActive.Click += new System.EventHandler(this.btnHabitActive_Click);
             // 
             // btnHelpHabit
             // 
@@ -495,12 +513,12 @@ namespace CSDAReminder
             "Sarapan",
             "Mandi pagi",
             "Makan siang",
+            "Olahraga rutin",
             "Mandi sore",
-            "Makan sore",
-            "Olahraga rutin"});
+            "Makan sore"});
             this.clbHabit.Location = new System.Drawing.Point(18, 46);
             this.clbHabit.Name = "clbHabit";
-            this.clbHabit.Size = new System.Drawing.Size(481, 418);
+            this.clbHabit.Size = new System.Drawing.Size(481, 181);
             this.clbHabit.TabIndex = 0;
             this.clbHabit.SelectedIndexChanged += new System.EventHandler(this.clbHabit_SelectedIndexChanged);
             // 
@@ -657,6 +675,15 @@ namespace CSDAReminder
             // 
             this.habitTimer.Tick += new System.EventHandler(this.habitTimer_Tick);
             // 
+            // lstHabit
+            // 
+            this.lstHabit.FormattingEnabled = true;
+            this.lstHabit.ItemHeight = 24;
+            this.lstHabit.Location = new System.Drawing.Point(18, 290);
+            this.lstHabit.Name = "lstHabit";
+            this.lstHabit.Size = new System.Drawing.Size(481, 172);
+            this.lstHabit.TabIndex = 28;
+            // 
             // CSDAReminder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -724,8 +751,7 @@ namespace CSDAReminder
         private System.Windows.Forms.CheckedListBox clbHabit;
         private System.Windows.Forms.Button btnJadwalDelete;
         private System.Windows.Forms.Button btnHelpJadwal;
-        private System.Windows.Forms.Button btnHabitDelete;
-        private System.Windows.Forms.ComboBox cbHabit;
+        private System.Windows.Forms.Button btnHabitActive;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.Button btnIbadahLokasi;
@@ -748,5 +774,8 @@ namespace CSDAReminder
         private System.Windows.Forms.ComboBox cmbJadwalRemove;
         private System.Windows.Forms.Timer habitTimer;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox tbHabitStatus;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ListBox lstHabit;
     }
 }

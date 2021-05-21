@@ -48,8 +48,6 @@ namespace CSDAReminder
         private void CSDAReminder_Load(object sender, EventArgs e)
         {
             timer.Start();
-            // tbName.Text = enterName(tbNama)
-            //showHabit();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -405,14 +403,169 @@ namespace CSDAReminder
             showJadwal();
         }
 
-        private void showHabit()
-        { 
-            if(DateTime.Now == Convert.ToDateTime("08:12:30"))
+        private void btnHabitActive_Click(object sender, EventArgs e)
+        {
+            lstHabit.Items.Clear();
+            tbHabitStatus.Text = "Habit Aktif";
+            
+            DateTime time1 = DateTime.ParseExact("08:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime time2 = DateTime.ParseExact("09:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime time3 = DateTime.ParseExact("11:30:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime time4 = DateTime.ParseExact("15:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime time5 = DateTime.ParseExact("17:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            DateTime time6 = DateTime.ParseExact("18:30:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            
+            for (int i = 0; i < clbHabit.Items.Count; i++)
             {
-                //notifyCSDA.BalloonTipText = "Habit: Sarapan!";
-                //notifyCSDA.ShowBalloonTip(30000);
+                if (clbHabit.GetItemCheckState(i) == CheckState.Checked)
+                {
+                    if(clbHabit.Items[i].ToString() == "Sarapan")
+                    {
+                        Habit h = new Habit(clbHabit.Items[i].ToString(), time1);
+                        createHabit(h);
+                    }
+                    else if (clbHabit.Items[i].ToString() == "Mandi pagi")
+                    {
+                        Habit h = new Habit(clbHabit.Items[i].ToString(), time2);
+                        createHabit(h);
+                    }
+                    else if (clbHabit.Items[i].ToString() == "Makan siang")
+                    {
+                        Habit h = new Habit(clbHabit.Items[i].ToString(), time3);
+                        createHabit(h);
+                    }
+                    else if (clbHabit.Items[i].ToString() == "Olahraga rutin")
+                    {
+                        Habit h = new Habit(clbHabit.Items[i].ToString(), time4);
+                        createHabit(h);
+                    }
+                    else if (clbHabit.Items[i].ToString() == "Mandi sore")
+                    {
+                        Habit h = new Habit(clbHabit.Items[i].ToString(), time5);
+                        createHabit(h);
+                    }
+                    else if (clbHabit.Items[i].ToString() == "Makan sore")
+                    {
+                        Habit h = new Habit(clbHabit.Items[i].ToString(), time6);
+                        createHabit(h);
+                    }
+                }
             }
 
+            foreach (int i in clbHabit.CheckedIndices)
+            {
+                clbHabit.SetItemCheckState(i, CheckState.Unchecked);
+            }
+        }
+
+        private void createHabit(Habit h)
+        {
+            lstHabit.Items.Add(h);
+            if (lstHabit.Items.Count <= 1)
+            {
+                updateHabitTimer(h);
+                habitTimer.Start();
+            }
+            else if (isEarliestHabit(h))
+            {
+                updateHabitTimer(h);
+            }
+        }
+            
+        /// <summary>
+        /// Updates reminder timer and sets the notify icon component properties
+        /// </summary>
+        private void updateHabitTimer(Habit h)
+        {
+            notifyCSDA.BalloonTipText = "Ambis boleh tapi jangan lupa : " + h.name;
+            Int32 tempInterval = getWaktu(h.habitTime);
+            //0 is an invalid interval, so just show the reminder immediately
+            if (tempInterval <= 0)
+            {
+                showHabit();
+            }
+            //Else update the timer interval
+            else
+            {
+                habitTimer.Interval = tempInterval;
+            }
+        }
+
+        /// <summary>
+        /// Shows the reminder message, deletes the reminder, and updates the timer
+        /// </summary>
+        private void showHabit()
+        {
+            //if there are no reminders, return
+            if (lstHabit.Items.Count <= 0)
+            {
+                return;
+            }
+            notifyCSDA.ShowBalloonTip(30000);
+
+            //removeReminder stops the timer when there are no more reminders, so we don't have to update it 
+            removeHabit(findEarliestHabit());
+            Habit h = findEarliestHabit();
+            if (h != null)
+            {
+                updateHabitTimer(findEarliestHabit());
+            }
+        }
+
+        /// <summary>
+        /// Removes a reminder and updates the timer if necessary
+        /// </summary>
+        private void removeHabit(Habit h)
+        {
+            //Check if this is the most recent reminder, then update the timer 
+            bool update = false;
+            if (isEarliestHabit(h))
+            {
+                update = true;
+            }
+
+            lstHabit.Items.Remove(h);
+            //If no reminders remain, stop the timer
+            if (lstHabit.Items.Count <= 0)
+            {
+                habitTimer.Stop();
+            }
+            else if (update)
+            {
+                updateHabitTimer(findEarliestHabit());
+            }
+        }
+
+        /// <summary>
+        /// Returns the reminder with the earliest remind date in the reminder list.
+        /// Returns null if list is empty 
+        /// </summary>
+        private Habit findEarliestHabit()
+        {
+            if (lstHabit.Items.Count <= 0)
+            {
+                return null;
+            }
+            Habit returnHabit = (Habit)lstHabit.Items[0];
+            foreach (Habit h in lstHabit.Items)
+            {
+                if (h.habitTime.Ticks <= returnHabit.habitTime.Ticks)
+                    returnHabit = h;
+            }
+            return returnHabit;
+        }
+
+        /// <summary>
+        /// Returns true if the reminder parameter is the earliest reminder
+        /// </summary>
+        private bool isEarliestHabit(Habit inHabit)
+        {
+            return inHabit.Equals(findEarliestHabit());
+        }
+
+        private void habitTimer_Tick(object sender, EventArgs e)
+        {
+            showHabit();
         }
 
         private void clbHabit_SelectedIndexChanged(object sender, EventArgs e)
@@ -522,14 +675,15 @@ namespace CSDAReminder
 
         }
 
-        private void habitTimer_Tick(object sender, EventArgs e)
-        {
-
-        }
-
         private void notifyCSDA_MouseDoubleClick(object sender, MouseEventArgs e)
         {
 
         }
+
+        private void tbHabitStatus_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
     }
 }
