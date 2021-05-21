@@ -407,44 +407,46 @@ namespace CSDAReminder
         {
             lstHabit.Items.Clear();
             tbHabitStatus.Text = "Habit Aktif";
-            
-            DateTime time1 = DateTime.ParseExact("08:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime time2 = DateTime.ParseExact("09:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime time3 = DateTime.ParseExact("11:30:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime time4 = DateTime.ParseExact("15:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime time5 = DateTime.ParseExact("17:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            DateTime time6 = DateTime.ParseExact("18:30:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+
+            DateTime time = DateTime.Now;
+            DateTime time1 = new DateTime(time.Year, time.Month, time.Day, 8, 0, 0);
+            DateTime time2 = new DateTime(time.Year, time.Month, time.Day, 9, 0, 0);
+            DateTime time3 = new DateTime(time.Year, time.Month, time.Day, 11, 30, 0);
+            DateTime time4 = new DateTime(time.Year, time.Month, time.Day, 15, 0, 0);
+            DateTime time5 = new DateTime(time.Year, time.Month, time.Day, 17, 50, 0);
+            DateTime time6 = new DateTime(time.Year, time.Month, time.Day, 18, 30, 0);
+            //DateTime time2 = DateTime.ParseExact("09:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             
             for (int i = 0; i < clbHabit.Items.Count; i++)
-            {
+            { 
                 if (clbHabit.GetItemCheckState(i) == CheckState.Checked)
                 {
-                    if(clbHabit.Items[i].ToString() == "Sarapan")
+                    if(clbHabit.Items[i].ToString() == "Sarapan" && (DateTime.Compare(time, time1) < 0 ))
                     {
                         Habit h = new Habit(clbHabit.Items[i].ToString(), time1);
                         createHabit(h);
                     }
-                    else if (clbHabit.Items[i].ToString() == "Mandi pagi")
+                    else if (clbHabit.Items[i].ToString() == "Mandi pagi" && (DateTime.Compare(time, time2) < 0))
                     {
                         Habit h = new Habit(clbHabit.Items[i].ToString(), time2);
                         createHabit(h);
                     }
-                    else if (clbHabit.Items[i].ToString() == "Makan siang")
+                    else if (clbHabit.Items[i].ToString() == "Makan siang" && (DateTime.Compare(time, time3) < 0))
                     {
                         Habit h = new Habit(clbHabit.Items[i].ToString(), time3);
                         createHabit(h);
                     }
-                    else if (clbHabit.Items[i].ToString() == "Olahraga rutin")
+                    else if (clbHabit.Items[i].ToString() == "Olahraga rutin" && (DateTime.Compare(time, time4) < 0))
                     {
                         Habit h = new Habit(clbHabit.Items[i].ToString(), time4);
                         createHabit(h);
                     }
-                    else if (clbHabit.Items[i].ToString() == "Mandi sore")
+                    else if (clbHabit.Items[i].ToString() == "Mandi sore" && (DateTime.Compare(time, time5) < 0))
                     {
                         Habit h = new Habit(clbHabit.Items[i].ToString(), time5);
                         createHabit(h);
                     }
-                    else if (clbHabit.Items[i].ToString() == "Makan sore")
+                    else if (clbHabit.Items[i].ToString() == "Makan sore" && (DateTime.Compare(time, time6) < 0))
                     {
                         Habit h = new Habit(clbHabit.Items[i].ToString(), time6);
                         createHabit(h);
