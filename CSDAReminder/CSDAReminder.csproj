@@ -79,38 +79,13 @@
     <Compile Include="CSDAReminder.Designer.cs">
       <DependentUpon>CSDAReminder.cs</DependentUpon>
     </Compile>
-    <Compile Include="CSDA_Model.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CSDA_Model.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="CSDA_Model.cs" />
-    <Compile Include="CSDA_Diagram.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CSDA_Diagram.edmx</DependentUpon>
-    </Compile>
-    <Compile Include="CSDA_Model1.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CSDA_Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Jadwal.cs" />
     <Compile Include="Reminder.cs" />
     <Compile Include="JadwalIbadah.cs" />
     <Compile Include="Habit.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReminderTable.cs">
-      <DependentUpon>CSDA_Model.tt</DependentUpon>
-    </Compile>
-    <Compile Include="sysdiagram.cs">
-      <DependentUpon>CSDA_Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="Todo.cs" />
-    <Compile Include="TodoTable.cs">
-      <DependentUpon>CSDA_Model.tt</DependentUpon>
-    </Compile>
     <Compile Include="User.cs" />
     <EmbeddedResource Include="CSDAReminder.resx">
       <DependentUpon>CSDAReminder.cs</DependentUpon>
@@ -125,13 +100,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
-    <EntityDeploy Include="CSDA_Diagram.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>CSDA_Diagram.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <None Include="CSDA_Diagram.edmx.diagram">
-      <DependentUpon>CSDA_Diagram.edmx</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -151,25 +119,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\sholat-jarang-sedekah-dikit-ngaji-apalagi-terus-maunya-masuk-surga-mang-situ-punya-kenalan-orang-dal.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="CSDA_Database.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="CSDA_Database_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>CSDA_Database.mdf</DependentUpon>
-    </Content>
-    <Content Include="CSDA_Model.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CSDA_Diagram.edmx</DependentUpon>
-      <LastGenOutput>CSDA_Model.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="CSDA_Model.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>CSDA_Diagram.edmx</DependentUpon>
-      <LastGenOutput>CSDA_Model1.cs</LastGenOutput>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">

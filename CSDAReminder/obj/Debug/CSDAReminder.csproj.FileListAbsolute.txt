@@ -8,8 +8,6 @@ C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\obj\Debug\C
 C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.csproj.CoreCompileInputs.cache
 C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.exe
 C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.pdb
-C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\bin\Debug\CSDA_Database.mdf
-C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\bin\Debug\CSDA_Database_log.ldf
 C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\bin\Debug\EntityFramework.dll
 C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\bin\Debug\EntityFramework.SqlServer.dll
 C:\Users\Microsoft\source\repos\rizkyintan\CSDAReminder\CSDAReminder\bin\Debug\EntityFramework.xml

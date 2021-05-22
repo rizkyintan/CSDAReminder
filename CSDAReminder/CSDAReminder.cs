@@ -247,9 +247,13 @@ namespace CSDAReminder
                 timePickerJadwal.Value.Second);
 
             Jadwal j = new Jadwal(tbJadwal.Text, tanggalJadwal);
-            cmbJadwalRemove.Items.Add(j);
-            lstMingguan.Items.Add(j);
             tbJadwal.Text = "";
+            cmbJadwalRemove.Items.Add(j);
+            
+            if(DatesAreInTheSameWeek(tanggalJadwal, DateTime.Now))
+            {
+                lstMingguan.Items.Add(j);
+            }            
 
             if(tanggalJadwal.Day == DateTime.Now.Day)
             {
@@ -340,6 +344,18 @@ namespace CSDAReminder
         }
 
         /// <summary>
+        /// Untuk mengecek apakah dua jadwal berada dalam minggu yang sama
+        /// </summary>
+        private bool DatesAreInTheSameWeek(DateTime date1, DateTime date2)
+        {
+            var cal = System.Globalization.DateTimeFormatInfo.CurrentInfo.Calendar;
+            var d1 = date1.Date.AddDays(-1 * (int)cal.GetDayOfWeek(date1));
+            var d2 = date2.Date.AddDays(-1 * (int)cal.GetDayOfWeek(date2));
+
+            return d1 == d2;
+        }
+
+        /// <summary>
         /// Menghapus jadwal
         /// </summary>
         private void btnJadwalDelete_Click(object sender, EventArgs e)
@@ -349,7 +365,7 @@ namespace CSDAReminder
                 if (lstMingguan.Items[i].ToString() == cmbJadwalRemove.Text)
                 {
                     lstMingguan.Items.Remove(lstMingguan.Items[i]);
-                    clbHarian.Items.Remove(clbHarian.Items[i]);   
+                    //clbHarian.Items.Remove(clbHarian.Items[i]);   
                 }
             }
             cmbJadwalRemove.Items.Remove(cmbJadwalRemove.SelectedItem);
@@ -549,7 +565,6 @@ namespace CSDAReminder
         }
 
 
-
         //====================================================================================================//
         // KODE UNTUK MENAMPILKAN FITUR HELP
         //====================================================================================================//
@@ -579,9 +594,11 @@ namespace CSDAReminder
                 "Box 'Habit Yang Harus Dilakukan' berisikan habit yang akan datang. \n" +
                 "Habit akan muncul pada waktu yang sudah ditentukan oleh program.", "Help");
         }
-        private void btnHelpJadwalIbadah_Click(object sender, EventArgs e)
+        private void btnHelp_Click(object sender, EventArgs e)
         {
-            MessageBox.Show(" ", "Help");
+            MessageBox.Show("Selamat datang di aplikasi CSDA Reminder! \nBantuan terkait fitur dapat " +
+                "dilihat di tombol '?' pada setiap tab fitur. \nApabila aplikasi tidak berjalan dengan baik" +
+                " silahkan tutup aplikasi dan jalankan kembali. \nSemoga bermanfaat!", "Help");
         }
 
         //====================================================================================================//
@@ -593,7 +610,7 @@ namespace CSDAReminder
             try
             {
                 Save();
-                MessageBox.Show("Settings Saved!\nApplication will load saved settings upon next startup.");
+                MessageBox.Show("Data tersimpan!\nKetika aplikasi dibuka Application will load saved settings upon next startup.");
             }
             catch (Exception ex)
             {
@@ -788,6 +805,11 @@ namespace CSDAReminder
         }
 
         private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnHelpIbadah_Click(object sender, EventArgs e)
         {
 
         }

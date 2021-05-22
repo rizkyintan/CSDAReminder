@@ -48,7 +48,6 @@ namespace CSDAReminder
             this.datepickerReminder = new System.Windows.Forms.DateTimePicker();
             this.clbReminder = new System.Windows.Forms.CheckedListBox();
             this.tabJadwal = new System.Windows.Forms.TabPage();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.cmbJadwalRemove = new System.Windows.Forms.ComboBox();
             this.clbHarian = new System.Windows.Forms.CheckedListBox();
             this.btnHelpJadwal = new System.Windows.Forms.Button();
@@ -61,6 +60,7 @@ namespace CSDAReminder
             this.timePickerJadwal = new System.Windows.Forms.DateTimePicker();
             this.monthCalendarJadwal = new System.Windows.Forms.MonthCalendar();
             this.tabHabit = new System.Windows.Forms.TabPage();
+            this.btnCheckAll = new System.Windows.Forms.Button();
             this.listBox1 = new System.Windows.Forms.ListBox();
             this.label5 = new System.Windows.Forms.Label();
             this.lstHabit = new System.Windows.Forms.ListBox();
@@ -84,13 +84,11 @@ namespace CSDAReminder
             this.lblDate = new System.Windows.Forms.Label();
             this.btnSave = new System.Windows.Forms.Button();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
-            this.tbName = new System.Windows.Forms.TextBox();
             this.remindTimer = new System.Windows.Forms.Timer(this.components);
             this.notifyCSDA = new System.Windows.Forms.NotifyIcon(this.components);
             this.dayTimer = new System.Windows.Forms.Timer(this.components);
             this.jadwalTimer = new System.Windows.Forms.Timer(this.components);
             this.habitTimer = new System.Windows.Forms.Timer(this.components);
-            this.btnCheckAll = new System.Windows.Forms.Button();
             this.tabs.SuspendLayout();
             this.tabToDoList.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -135,9 +133,9 @@ namespace CSDAReminder
             // pictureBox1
             // 
             this.pictureBox1.Image = global::CSDAReminder.Properties.Resources.yoda_procrastinate_meme;
-            this.pictureBox1.Location = new System.Drawing.Point(716, 213);
+            this.pictureBox1.Location = new System.Drawing.Point(697, 208);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(196, 158);
+            this.pictureBox1.Size = new System.Drawing.Size(239, 217);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 5;
             this.pictureBox1.TabStop = false;
@@ -285,7 +283,6 @@ namespace CSDAReminder
             // tabJadwal
             // 
             this.tabJadwal.BackColor = System.Drawing.Color.Bisque;
-            this.tabJadwal.Controls.Add(this.textBox1);
             this.tabJadwal.Controls.Add(this.cmbJadwalRemove);
             this.tabJadwal.Controls.Add(this.clbHarian);
             this.tabJadwal.Controls.Add(this.btnHelpJadwal);
@@ -303,19 +300,6 @@ namespace CSDAReminder
             this.tabJadwal.TabIndex = 2;
             this.tabJadwal.Text = "Jadwal";
             this.tabJadwal.Click += new System.EventHandler(this.tabJadwal_Click);
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.Sienna;
-            this.textBox1.Font = new System.Drawing.Font("Futura Md BT", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.ForeColor = System.Drawing.SystemColors.InactiveBorder;
-            this.textBox1.Location = new System.Drawing.Point(64, 409);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(408, 70);
-            this.textBox1.TabIndex = 19;
-            this.textBox1.Text = "Apabila memasukkan jadwal, pilih hari yang sama namun dengan minggu yang berbeda!" +
-    "";
             // 
             // cmbJadwalRemove
             // 
@@ -444,6 +428,18 @@ namespace CSDAReminder
             this.tabHabit.TabIndex = 3;
             this.tabHabit.Text = "Habit";
             this.tabHabit.Click += new System.EventHandler(this.tabHabit_Click);
+            // 
+            // btnCheckAll
+            // 
+            this.btnCheckAll.BackColor = System.Drawing.Color.DarkSlateBlue;
+            this.btnCheckAll.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnCheckAll.Location = new System.Drawing.Point(387, 136);
+            this.btnCheckAll.Name = "btnCheckAll";
+            this.btnCheckAll.Size = new System.Drawing.Size(189, 42);
+            this.btnCheckAll.TabIndex = 32;
+            this.btnCheckAll.Text = "Check All";
+            this.btnCheckAll.UseVisualStyleBackColor = false;
+            this.btnCheckAll.Click += new System.EventHandler(this.btnCheckAll_Click);
             // 
             // listBox1
             // 
@@ -604,6 +600,7 @@ namespace CSDAReminder
             this.btnHelpIbadah.TabIndex = 22;
             this.btnHelpIbadah.Text = "?";
             this.btnHelpIbadah.UseVisualStyleBackColor = true;
+            this.btnHelpIbadah.Click += new System.EventHandler(this.btnHelpIbadah_Click);
             // 
             // pictureBox2
             // 
@@ -644,14 +641,16 @@ namespace CSDAReminder
             // 
             // btnHelp
             // 
+            this.btnHelp.BackColor = System.Drawing.Color.Maroon;
             this.btnHelp.Font = new System.Drawing.Font("Futura Bk BT", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnHelp.Location = new System.Drawing.Point(333, 12);
+            this.btnHelp.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.btnHelp.Location = new System.Drawing.Point(164, 20);
             this.btnHelp.Name = "btnHelp";
-            this.btnHelp.Size = new System.Drawing.Size(47, 37);
+            this.btnHelp.Size = new System.Drawing.Size(85, 37);
             this.btnHelp.TabIndex = 14;
-            this.btnHelp.Text = "?";
-            this.btnHelp.UseVisualStyleBackColor = true;
-            this.btnHelp.Click += new System.EventHandler(this.btnHelpJadwalIbadah_Click);
+            this.btnHelp.Text = "Help";
+            this.btnHelp.UseVisualStyleBackColor = false;
+            this.btnHelp.Click += new System.EventHandler(this.btnHelp_Click);
             // 
             // timer
             // 
@@ -685,7 +684,7 @@ namespace CSDAReminder
             // 
             this.btnSave.BackColor = System.Drawing.Color.SeaShell;
             this.btnSave.Font = new System.Drawing.Font("Futura Bk BT", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSave.Location = new System.Drawing.Point(208, 12);
+            this.btnSave.Location = new System.Drawing.Point(23, 20);
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(119, 37);
             this.btnSave.TabIndex = 21;
@@ -697,16 +696,6 @@ namespace CSDAReminder
             // 
             this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
-            // tbName
-            // 
-            this.tbName.BackColor = System.Drawing.Color.MistyRose;
-            this.tbName.Font = new System.Drawing.Font("Futura Bk BT", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.tbName.Location = new System.Drawing.Point(26, 15);
-            this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(167, 31);
-            this.tbName.TabIndex = 22;
-            this.tbName.TextChanged += new System.EventHandler(this.tbName_TextChanged);
-            // 
             // remindTimer
             // 
             this.remindTimer.Tick += new System.EventHandler(this.remindTimer_Tick);
@@ -715,7 +704,7 @@ namespace CSDAReminder
             // 
             this.notifyCSDA.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
             this.notifyCSDA.BalloonTipText = "TestBalloonTipText";
-            this.notifyCSDA.BalloonTipTitle = "Hi Intan!";
+            this.notifyCSDA.BalloonTipTitle = "Hi Student!";
             this.notifyCSDA.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyCSDA.Icon")));
             this.notifyCSDA.Text = "CSDA Reminder";
             this.notifyCSDA.Visible = true;
@@ -734,32 +723,20 @@ namespace CSDAReminder
             // 
             this.habitTimer.Tick += new System.EventHandler(this.habitTimer_Tick);
             // 
-            // btnCheckAll
-            // 
-            this.btnCheckAll.BackColor = System.Drawing.Color.DarkSlateBlue;
-            this.btnCheckAll.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.btnCheckAll.Location = new System.Drawing.Point(387, 136);
-            this.btnCheckAll.Name = "btnCheckAll";
-            this.btnCheckAll.Size = new System.Drawing.Size(189, 42);
-            this.btnCheckAll.TabIndex = 32;
-            this.btnCheckAll.Text = "Check All";
-            this.btnCheckAll.UseVisualStyleBackColor = false;
-            this.btnCheckAll.Click += new System.EventHandler(this.btnCheckAll_Click);
-            // 
             // CSDAReminder
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(1034, 603);
-            this.Controls.Add(this.tbName);
             this.Controls.Add(this.btnSave);
-            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.lblDate);
             this.Controls.Add(this.lblTime);
+            this.Controls.Add(this.btnHelp);
             this.Controls.Add(this.tabs);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "CSDAReminder";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "CSDAReminder";
@@ -821,7 +798,6 @@ namespace CSDAReminder
         private System.Windows.Forms.ComboBox cmbLokasi;
         private System.Windows.Forms.CheckedListBox clbJadwalIbadah;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
-        private System.Windows.Forms.TextBox tbName;
         private System.Windows.Forms.Timer remindTimer;
         private System.Windows.Forms.NotifyIcon notifyCSDA;
         private System.Windows.Forms.PictureBox pictureBox1;
@@ -835,7 +811,6 @@ namespace CSDAReminder
         private System.Windows.Forms.CheckedListBox clbHarian;
         private System.Windows.Forms.ComboBox cmbJadwalRemove;
         private System.Windows.Forms.Timer habitTimer;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.TextBox tbHabitStatus;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ListBox lstHabit;
