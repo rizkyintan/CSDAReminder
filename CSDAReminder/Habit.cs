@@ -11,6 +11,8 @@ namespace CSDAReminder
     //habit akan di reset setiap harinya
     //akan memberikan notifikasi pengingat
 
+    [Serializable]
+
     public class Habit
     {
         public String name { get; set; }

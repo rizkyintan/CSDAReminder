@@ -1,4 +1,4 @@
-﻿using System;
+﻿    using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +8,8 @@ namespace CSDAReminder
 {
     //kelas reminder untuk menyimpan kegiatan yang ingin dilakukan
     //dan akan memberikan notifikasi pengingat
+
+    [Serializable]
     public class Reminder
     {
         public String message { get; set; }

@@ -8,7 +8,8 @@ namespace CSDAReminder
 {
     //kelas todo untuk menaruh list yang ingin dilakukan
     //tanpa memberi waktu pengingat
-    //[Serializable]
+    
+    [Serializable]
     public class Todo
     {
         public string nama { get; set; }

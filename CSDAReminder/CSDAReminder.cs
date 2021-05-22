@@ -1,23 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 using System.Windows.Forms;
 
 namespace CSDAReminder
 {
     public partial class CSDAReminder : Form
     {
-        TodoTable todoTable;
 
         public CSDAReminder()
         {
             InitializeComponent();
-            tbTodoAdd.KeyDown += tbTodoAdd_OnKeyDown; //attaches event
+            tbTodoAdd.KeyDown += tbTodoAdd_OnKeyDown;
             tbReminder.KeyDown += tbReminder_OnKeyDown;
             //calculate the time until first day is over 
             Int32 timeInterval = 86400000 - ((DateTime.Now.Hour * 3600 + DateTime.Now.Minute * 60 + DateTime.Now.Second) * 1000);
@@ -26,30 +22,16 @@ namespace CSDAReminder
                 throw new Exception("Time interval invalid");
             }
             dayTimer.Interval = timeInterval;
+            LoadLastSession();
         }
 
-        private void tbTodoAdd_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnTodoAdd_Click(sender, e);
-            }
-        }
-
-        private void tbReminder_OnKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                btnReminderAdd_Click(sender, e);
-            }
-        }
-
-        // kode dibawah untuk menampilkan realtime jam dan tanggal
+        // kode untuk menjalankan timer
         private void CSDAReminder_Load(object sender, EventArgs e)
         {
             timer.Start();
         }
 
+        // kode untuk menampilkan waktu dan tanggal real time pada UI
         private void timer_Tick(object sender, EventArgs e)
         {
             lblTime.Text = DateTime.Now.ToString("HH:mm:ss");
@@ -58,18 +40,27 @@ namespace CSDAReminder
             lblTimeHabit2.Text = DateTime.Now.ToString("ss");
         }
 
-        private void lblTime_Click(object sender, EventArgs e)
+        // Kode untuk menambahkan todo list dengan tombol enter
+        private void tbTodoAdd_OnKeyDown(object sender, KeyEventArgs e)
         {
-
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnTodoAdd_Click(sender, e);
+            }
         }
 
-        /// <summary>
-        /// Menghapus list todo pada box yang tercentang
-        /// </summary>
-        private void clbTodo_SelectedIndexChanged(object sender, EventArgs e)
+        // Kode untuk menambahkan reminder dengan tombol enter
+        private void tbReminder_OnKeyDown(object sender, KeyEventArgs e)
         {
-            clbTodo.Items.Remove(clbTodo.SelectedItem);
-        }
+            if (e.KeyCode == Keys.Enter)
+            {
+                btnReminderAdd_Click(sender, e);
+            }
+        }     
+
+        //====================================================================================================//
+        // KODE UNTUK FITUR TO DO LIST
+        //====================================================================================================//
 
         private void btnTodoAdd_Click(object sender, EventArgs e)
         {
@@ -80,26 +71,23 @@ namespace CSDAReminder
             }
             else
             {
-                //using(var db = new CSDA_Model())
-                //{
-                //    TodoTable newTodoTable = new TodoTable
-                //    {
-                //        Desc = tbTodoAdd.Text,
-                //    };
-                //    db.TodoTables.Add(newTodoTable);
-                //    db.SaveChanges();
-                //};
                 clbTodo.Items.Add(new Todo(tbTodoAdd.Text));
                 tbTodoAdd.Text = ""; 
-                //mengosongkan tbTodoAdd setelah diisi
-            }
-            
+            }   
         }
-
-        private void tbTodoAdd_TextChanged(object sender, EventArgs e)
+        
+        /// <summary>
+        /// Menghapus list todo pada box yang tercentang
+        /// </summary>
+        private void clbTodo_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            clbTodo.Items.Remove(clbTodo.SelectedItem);
         }
+
+
+        //====================================================================================================//
+        // KODE UNTUK FITUR REMINDER
+        //====================================================================================================//
 
         /// <summary>
         /// Menambahkan reminder baru ketika button Add di tekan
@@ -108,7 +96,7 @@ namespace CSDAReminder
         {
             if (tbReminder.Text == "")
             {
-                MessageBox.Show("Tolong tulis deksripsi reminder.");
+                MessageBox.Show("Tolong tulis deksripsi reminder!", "Warning");
                 return;
             }
             DateTime reminderDate = new DateTime( datepickerReminder.Value.Year,
@@ -119,13 +107,13 @@ namespace CSDAReminder
             clbReminder.Items.Add(r);
             tbReminder.Text = "";
 
-            //Men-Set waktu jika reminder ditambahkan 
+            // Set waktu dan start timer jika reminder pertama ditambahkan 
             if (clbReminder.Items.Count <= 1)
             {
                 updateReminderTimer(r);
                 remindTimer.Start();
             }
-            //else mengecek apakah set waktu lebih awal dari waktu sekarang
+            // Apabila reminder berikutnya lebih awal maka waktu diupdate 
             else if (isEarliestReminder(r))
             {
                 updateReminderTimer(r);
@@ -133,33 +121,53 @@ namespace CSDAReminder
         }
 
         /// <summary>
-        /// Mengubah waktu yg ditentukan ke timer untuk menghitung interval waktu dari waktu sekarang ke waktu reminder
+        /// Mengupdate waktu reminder dan set properti untuk notifikasi
         /// </summary>
-        private Int32 getWaktu(DateTime futureEvent)
+        private void updateReminderTimer(Reminder r)
         {
-            //There are 10000 ticks in a millisecond
-            return (Int32)futureEvent.Subtract(DateTime.Now).Ticks / 10000;
-        }
+            notifyCSDA.BalloonTipText = "Reminder: " + r.message;
+            Int32 tempInterval = getWaktu(r.remindDate);
 
-        /// <summary>
-        /// Menghapus semua reminder yang di check
-        /// </summary>
-        private void btnReminderDelete_Click(object sender, EventArgs e)
-        {
-            while (clbReminder.CheckedItems.Count > 0)
+            // ketika interval adalah 0 maka reminder segera dimunculkan
+            if (tempInterval <= 0)
             {
-                //since the items are removed from the checked items list
-                //we only need to remove the first item and let the list be continually updated
-                clbReminder.Items.Remove(clbReminder.CheckedItems[0]);
+                showReminder();
+            }
+            // update interval timer
+            else
+            {
+                remindTimer.Interval = tempInterval;
             }
         }
 
         /// <summary>
-        /// Removes a reminder and updates the timer if necessary
+        /// Memunculkan reminder, menghapusnya, dan mengupdate timer
+        /// </summary>
+        private void showReminder()
+        {
+            // apabila tidak ada reminder maka return
+            if (clbReminder.Items.Count <= 0)
+            {
+                return;
+            }
+            notifyCSDA.ShowBalloonTip(30000);
+
+            // removeReminder menghentikan timer bila sudah tidak ada lagi reminder
+            // sehingga kita tidak perlu update manual 
+            removeReminder(findEarliestReminder());
+            Reminder r = findEarliestReminder();
+            if (r != null)
+            {
+                updateReminderTimer(findEarliestReminder());
+            }
+        }
+
+        /// <summary>
+        /// Menghapus reminder dan mengupdate timernya jika dibutuhkan
         /// </summary>
         private void removeReminder(Reminder r)
         {
-            //Check if this is the most recent reminder, then update the timer 
+            // Mencek apakah reminder ini adalah yg paling awal, kemudian mengupdate waktunya 
             bool update = false;
             if (isEarliestReminder(r))
             {
@@ -167,7 +175,7 @@ namespace CSDAReminder
             }
 
             clbReminder.Items.Remove(r);
-            //If no reminders remain, stop the timer
+            // Jika sudah tidak ada reminder hentikan timernya
             if (clbReminder.Items.Count <= 0)
             {
                 remindTimer.Stop();
@@ -179,8 +187,16 @@ namespace CSDAReminder
         }
 
         /// <summary>
-        /// Returns the reminder with the earliest remind date in the reminder list.
-        /// Returns null if list is empty 
+        /// Mengembalikan nilai true apabila parameter reminder adalah reminder ter-awal
+        /// </summary>
+        private bool isEarliestReminder(Reminder inRemind)
+        {
+            return inRemind.Equals(findEarliestReminder());
+        }
+
+        /// <summary>
+        /// Return reminder yang paling awal di list
+        /// Return null apabila list kosong
         /// </summary>
         private Reminder findEarliestReminder()
         {
@@ -198,61 +214,24 @@ namespace CSDAReminder
         }
 
         /// <summary>
-        /// Returns true if the reminder parameter is the earliest reminder
+        /// Menghapus semua reminder yang di check
         /// </summary>
-        private bool isEarliestReminder(Reminder inRemind)
+        private void btnReminderDelete_Click(object sender, EventArgs e)
         {
-            return inRemind.Equals(findEarliestReminder());
+            while (clbReminder.CheckedItems.Count > 0)
+            {
+                // hanya menghapus item pertama dan list lain akan mengikuti
+                clbReminder.Items.Remove(clbReminder.CheckedItems[0]);
+            }
         }
+
+        //====================================================================================================//
+        // KODE UNTUK FITUR JADWAL
+        // Mekanismenya sama dengan reminder hanya saja pada jadwal dibuat sama perminggu nya
+        //====================================================================================================//
 
         /// <summary>
-        /// Updates reminder timer and sets the notify icon component properties
-        /// </summary>
-        private void updateReminderTimer(Reminder r)
-        {
-            notifyCSDA.BalloonTipText = "Reminder: " + r.message;
-            Int32 tempInterval = getWaktu(r.remindDate);
-            //0 is an invalid interval, so just show the reminder immediately
-            if (tempInterval <= 0)
-            {
-                showReminder();
-            }
-            //Else update the timer interval
-            else
-            {
-                remindTimer.Interval = tempInterval;
-            }
-        }
-
-        //This method will show the reminder when it is time 
-        private void remindTimer_Tick(object sender, EventArgs e)
-        {
-            showReminder();
-        }
-
-        /// <summary>
-        /// Shows the reminder message, deletes the reminder, and updates the timer
-        /// </summary>
-        private void showReminder()
-        {
-            //if there are no reminders, return
-            if (clbReminder.Items.Count <= 0)
-            {
-                return;
-            }
-            notifyCSDA.ShowBalloonTip(30000);
-
-            //removeReminder stops the timer when there are no more reminders, so we don't have to update it 
-            removeReminder(findEarliestReminder());
-            Reminder r = findEarliestReminder();
-            if (r != null)
-            {
-                updateReminderTimer(findEarliestReminder());
-            }
-        }
-
-        /// <summary>
-        /// Adds a new event to the schedule
+        /// Menambahkan jadwal baru
         /// </summary>
         private void btnJadwalAdd_Click(object sender, EventArgs e)
         {
@@ -277,91 +256,36 @@ namespace CSDAReminder
                 clbHarian.Items.Add(j);
             }
 
-            //Men-Set waktu jika jadwal ditambahkan 
+            // Set waktu dan start timer jika reminder pertama ditambahkan
             if (lstMingguan.Items.Count <= 1)
             {
                 updateJadwalTimer(j);
                 jadwalTimer.Start();
             }
 
-            //else mengecek apakah set waktu lebih awal dari waktu sekarang
+            // Apabila jadwal berikutnya lebih awal maka waktu diupdate 
             else if (isEarliestJadwal(j))
             {
                 updateJadwalTimer(j);
             }
         }
 
-        private void clbHarian_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            clbHarian.Items.Remove(clbHarian.SelectedItem);
-        }
-
-        private void btnJadwalDelete_Click(object sender, EventArgs e)
-        {
-            for (int i = 0; i < lstMingguan.Items.Count; i++)
-            {
-                if (lstMingguan.Items[i].ToString() == cmbJadwalRemove.Text)
-                {
-                    lstMingguan.Items.Remove(lstMingguan.Items[i]);
-                    clbHarian.Items.Remove(clbHarian.Items[i]);   
-                }
-            }
-            cmbJadwalRemove.Items.Remove(cmbJadwalRemove.SelectedItem);
-            cmbJadwalRemove.Text = "";
-        }
-
-        /// <summary>
-        /// Returns the reminder with the earliest remind date in the reminder list.
-        /// Returns null if list is empty 
-        /// </summary>
-        private Jadwal findEarliestJadwal()
-        {
-            if (lstMingguan.Items.Count <= 0)
-            {
-                return null;
-            }
-            Jadwal returnJadwal = (Jadwal)lstMingguan.Items[0];
-            foreach (Jadwal j in lstMingguan.Items)
-            {
-                if (j.tanggalJadwal.Ticks <= returnJadwal.tanggalJadwal.Ticks)
-                    returnJadwal = j;
-            }
-            return returnJadwal;
-        }
-
-        /// <summary>
-        /// Returns true if the reminder parameter is the earliest reminder
-        /// </summary>
-        private bool isEarliestJadwal(Jadwal inJadwal)
-        {
-            return inJadwal.Equals(findEarliestJadwal());
-        }
-
-        /// <summary>
-        /// Updates reminder timer and sets the notify icon component properties
-        /// </summary>
         private void updateJadwalTimer(Jadwal j)
         {
             notifyCSDA.BalloonTipText = "Jadwal: " + j.deskripsi;
             Int32 tempInterval = getWaktu(j.tanggalJadwal);
-            //0 is an invalid interval, so just show the reminder immediately
             if (tempInterval <= 0)
             {
                 showJadwal();
             }
-            //Else update the timer interval
             else
             {
                 jadwalTimer.Interval = tempInterval;
             }
         }
-        
-        /// <summary>
-        /// Shows the reminder message, deletes the reminder, and updates the timer
-        /// </summary>
+
         private void showJadwal()
         {
-            //if there are no reminders, return
             if (lstMingguan.Items.Count <= 0)
             {
                 return;
@@ -378,7 +302,6 @@ namespace CSDAReminder
 
         private void removeJadwal(Jadwal j)
         {
-            //Check if this is the most recent reminder, then update the timer 
             bool update = false;
             if (isEarliestJadwal(j))
             {
@@ -386,7 +309,6 @@ namespace CSDAReminder
             }
 
             lstMingguan.Items.Remove(j);
-            //If no reminders remain, stop the timer
             if (lstMingguan.Items.Count <= 0)
             {
                 jadwalTimer.Stop();
@@ -397,66 +319,115 @@ namespace CSDAReminder
             }
         }
 
-        //This method will show the reminder when it is time 
-        private void jadwalTimer_Tick(object sender, EventArgs e)
+        private Jadwal findEarliestJadwal()
         {
-            showJadwal();
+            if (lstMingguan.Items.Count <= 0)
+            {
+                return null;
+            }
+            Jadwal returnJadwal = (Jadwal)lstMingguan.Items[0];
+            foreach (Jadwal j in lstMingguan.Items)
+            {
+                if (j.tanggalJadwal.Ticks <= returnJadwal.tanggalJadwal.Ticks)
+                    returnJadwal = j;
+            }
+            return returnJadwal;
         }
+
+        private bool isEarliestJadwal(Jadwal inJadwal)
+        {
+            return inJadwal.Equals(findEarliestJadwal());
+        }
+
+        /// <summary>
+        /// Menghapus jadwal
+        /// </summary>
+        private void btnJadwalDelete_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < lstMingguan.Items.Count; i++)
+            {
+                if (lstMingguan.Items[i].ToString() == cmbJadwalRemove.Text)
+                {
+                    lstMingguan.Items.Remove(lstMingguan.Items[i]);
+                    clbHarian.Items.Remove(clbHarian.Items[i]);   
+                }
+            }
+            cmbJadwalRemove.Items.Remove(cmbJadwalRemove.SelectedItem);
+            cmbJadwalRemove.Text = "";
+        }
+
+        /// <summary>
+        /// Menghapus jadwal pada box 'Jadwal Hari Ini' dengan dicentang
+        /// </summary>
+        private void clbHarian_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            clbHarian.Items.Remove(clbHarian.SelectedItem);
+        }
+
+        //====================================================================================================//
+        // KODE UNTUK FITUR HABIT
+        // Mekanismenya sama dengan reminder hanya saja pada habit waktu sudah ditentukan oleh program
+        //====================================================================================================//
 
         private void btnHabitActive_Click(object sender, EventArgs e)
         {
-            lstHabit.Items.Clear();
-            tbHabitStatus.Text = "Habit Aktif";
+            if (clbHabit.CheckedItems.Count == 0)
+            {
+                MessageBox.Show("Centang salah satu habit pada box!", "Warning");
+            }
+            else
+            {
+                lstHabit.Items.Clear();
+                tbHabitStatus.Text = "Habit Aktif";
 
-            DateTime time = DateTime.Now;
-            DateTime time1 = new DateTime(time.Year, time.Month, time.Day, 8, 0, 0);
-            DateTime time2 = new DateTime(time.Year, time.Month, time.Day, 9, 0, 0);
-            DateTime time3 = new DateTime(time.Year, time.Month, time.Day, 11, 30, 0);
-            DateTime time4 = new DateTime(time.Year, time.Month, time.Day, 15, 0, 0);
-            DateTime time5 = new DateTime(time.Year, time.Month, time.Day, 17, 0, 0);
-            DateTime time6 = new DateTime(time.Year, time.Month, time.Day, 18, 30, 0);
-            //DateTime time2 = DateTime.ParseExact("09:00:00", "HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
-            
-            for (int i = 0; i < clbHabit.Items.Count; i++)
-            { 
-                if (clbHabit.GetItemCheckState(i) == CheckState.Checked)
+                DateTime time = DateTime.Now;
+                DateTime time1 = new DateTime(time.Year, time.Month, time.Day, 8, 0, 0);
+                DateTime time2 = new DateTime(time.Year, time.Month, time.Day, 9, 0, 0);
+                DateTime time3 = new DateTime(time.Year, time.Month, time.Day, 11, 30, 0);
+                DateTime time4 = new DateTime(time.Year, time.Month, time.Day, 15, 0, 0);
+                DateTime time5 = new DateTime(time.Year, time.Month, time.Day, 17, 0, 0);
+                DateTime time6 = new DateTime(time.Year, time.Month, time.Day, 18, 30, 0);
+
+                for (int i = 0; i < clbHabit.Items.Count; i++)
                 {
-                    if(clbHabit.Items[i].ToString() == "Sarapan" && (DateTime.Compare(time, time1) < 0 ))
+                    if (clbHabit.GetItemCheckState(i) == CheckState.Checked)
                     {
-                        Habit h = new Habit(clbHabit.Items[i].ToString(), time1);
-                        createHabit(h);
-                    }
-                    else if (clbHabit.Items[i].ToString() == "Mandi pagi" && (DateTime.Compare(time, time2) < 0))
-                    {
-                        Habit h = new Habit(clbHabit.Items[i].ToString(), time2);
-                        createHabit(h);
-                    }
-                    else if (clbHabit.Items[i].ToString() == "Makan siang" && (DateTime.Compare(time, time3) < 0))
-                    {
-                        Habit h = new Habit(clbHabit.Items[i].ToString(), time3);
-                        createHabit(h);
-                    }
-                    else if (clbHabit.Items[i].ToString() == "Olahraga rutin" && (DateTime.Compare(time, time4) < 0))
-                    {
-                        Habit h = new Habit(clbHabit.Items[i].ToString(), time4);
-                        createHabit(h);
-                    }
-                    else if (clbHabit.Items[i].ToString() == "Mandi sore" && (DateTime.Compare(time, time5) < 0))
-                    {
-                        Habit h = new Habit(clbHabit.Items[i].ToString(), time5);
-                        createHabit(h);
-                    }
-                    else if (clbHabit.Items[i].ToString() == "Makan sore" && (DateTime.Compare(time, time6) < 0))
-                    {
-                        Habit h = new Habit(clbHabit.Items[i].ToString(), time6);
-                        createHabit(h);
+                        if (clbHabit.Items[i].ToString() == "Sarapan" && (DateTime.Compare(time, time1) < 0))
+                        {
+                            Habit h = new Habit(clbHabit.Items[i].ToString(), time1);
+                            createHabit(h);
+                        }
+                        else if (clbHabit.Items[i].ToString() == "Mandi pagi" && (DateTime.Compare(time, time2) < 0))
+                        {
+                            Habit h = new Habit(clbHabit.Items[i].ToString(), time2);
+                            createHabit(h);
+                        }
+                        else if (clbHabit.Items[i].ToString() == "Makan siang" && (DateTime.Compare(time, time3) < 0))
+                        {
+                            Habit h = new Habit(clbHabit.Items[i].ToString(), time3);
+                            createHabit(h);
+                        }
+                        else if (clbHabit.Items[i].ToString() == "Olahraga rutin" && (DateTime.Compare(time, time4) < 0))
+                        {
+                            Habit h = new Habit(clbHabit.Items[i].ToString(), time4);
+                            createHabit(h);
+                        }
+                        else if (clbHabit.Items[i].ToString() == "Mandi sore" && (DateTime.Compare(time, time5) < 0))
+                        {
+                            Habit h = new Habit(clbHabit.Items[i].ToString(), time5);
+                            createHabit(h);
+                        }
+                        else if (clbHabit.Items[i].ToString() == "Makan sore" && (DateTime.Compare(time, time6) < 0))
+                        {
+                            Habit h = new Habit(clbHabit.Items[i].ToString(), time6);
+                            createHabit(h);
+                        }
                     }
                 }
-            }
-
-            foreach (int i in clbHabit.CheckedIndices)
-            {
-                clbHabit.SetItemCheckState(i, CheckState.Unchecked);
+                foreach (int i in clbHabit.CheckedIndices)
+                {
+                    clbHabit.SetItemCheckState(i, CheckState.Unchecked);
+                }
             }
         }
 
@@ -473,39 +444,29 @@ namespace CSDAReminder
                 updateHabitTimer(h);
             }
         }
-            
-        /// <summary>
-        /// Updates reminder timer and sets the notify icon component properties
-        /// </summary>
+  
         private void updateHabitTimer(Habit h)
         {
             notifyCSDA.BalloonTipText = "Ambis boleh tapi jangan lupa : " + h.name;
             Int32 tempInterval = getWaktu(h.habitTime);
-            //0 is an invalid interval, so just show the reminder immediately
             if (tempInterval <= 0)
             {
                 showHabit();
             }
-            //Else update the timer interval
             else
             {
                 habitTimer.Interval = tempInterval;
             }
         }
 
-        /// <summary>
-        /// Shows the reminder message, deletes the reminder, and updates the timer
-        /// </summary>
         private void showHabit()
         {
-            //if there are no reminders, return
             if (lstHabit.Items.Count <= 0)
             {
                 return;
             }
             notifyCSDA.ShowBalloonTip(30000);
 
-            //removeReminder stops the timer when there are no more reminders, so we don't have to update it 
             removeHabit(findEarliestHabit());
             Habit h = findEarliestHabit();
             if (h != null)
@@ -514,12 +475,8 @@ namespace CSDAReminder
             }
         }
 
-        /// <summary>
-        /// Removes a reminder and updates the timer if necessary
-        /// </summary>
         private void removeHabit(Habit h)
         {
-            //Check if this is the most recent reminder, then update the timer 
             bool update = false;
             if (isEarliestHabit(h))
             {
@@ -527,7 +484,6 @@ namespace CSDAReminder
             }
 
             lstHabit.Items.Remove(h);
-            //If no reminders remain, stop the timer
             if (lstHabit.Items.Count <= 0)
             {
                 habitTimer.Stop();
@@ -538,10 +494,6 @@ namespace CSDAReminder
             }
         }
 
-        /// <summary>
-        /// Returns the reminder with the earliest remind date in the reminder list.
-        /// Returns null if list is empty 
-        /// </summary>
         private Habit findEarliestHabit()
         {
             if (lstHabit.Items.Count <= 0)
@@ -557,17 +509,193 @@ namespace CSDAReminder
             return returnHabit;
         }
 
-        /// <summary>
-        /// Returns true if the reminder parameter is the earliest reminder
-        /// </summary>
         private bool isEarliestHabit(Habit inHabit)
         {
             return inHabit.Equals(findEarliestHabit());
         }
 
+        private void btnCheckAll_Click(object sender, EventArgs e)
+        {
+            for (int i = 0; i < clbHabit.Items.Count; i++)
+            {
+                clbHabit.SetItemChecked(i, true);
+            }
+        }
+
+        //====================================================================================================//
+        // KODE UNTUK MENAMPILKAN FITUR APABILA SUDAH WAKTUNYA
+        //====================================================================================================//
+
+        private void remindTimer_Tick(object sender, EventArgs e)
+        {
+            showReminder();
+        }
+        private void jadwalTimer_Tick(object sender, EventArgs e)
+        {
+            showJadwal();
+        }
         private void habitTimer_Tick(object sender, EventArgs e)
         {
             showHabit();
+        }
+
+        /// <summary>
+        /// Mengubah waktu yg ditentukan ke timer untuk menghitung interval waktu dari waktu sekarang ke waktu tertentu
+        /// </summary>
+        private Int32 getWaktu(DateTime futureEvent)
+        {
+            //There are 10000 ticks in a millisecond
+            return (Int32)futureEvent.Subtract(DateTime.Now).Ticks / 10000;
+        }
+
+
+
+        //====================================================================================================//
+        // KODE UNTUK MENAMPILKAN FITUR HELP
+        //====================================================================================================//
+
+        private void btnHelpTodo_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Tuliskan To Do List yang harus dilakukan kemudian tekan tombol 'Add To Do List'." + "\n" +
+                            "Ketika list sudah dilakukan centang pada box kemudian list akan menghilang.", "Help");
+        }
+        private void btnHelpReminder_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Tuliskan deskripsi reminder dan pilih tanggal dan waktu nya kemudian tekan tombol 'Add'." + "\n" +
+                            "Reminder akan muncul pada box di sebelah kiri, ketika notifikasi muncul reminder akan hilang dengan sendirinya." + "\n" +
+                            "Centang reminder pada box kemudian tekan delete untuk menghapus reminder.", "Help");
+        }
+        private void btnHelpJadwal_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Tuliskan deskripsi jadwal dan pilih tanggal dan waktu nya kemudian tekan tombol 'Add'." + "\n" +
+                           "Jadwal akan muncul pada box 'Jadwal Minggu Ini', ketika notifikasi muncul jadwal akan hilang dengan sendirinya." + "\n" +
+                           "Box 'Jadwal Hari Ini' menunjukkan jadwal yang terdapat pada hari pada hari itu. Centang jadwal untuk menghapus jadwal yang sudah dilakukan." + "\n" +
+                           "Pilih jadwal pada kolom 'Delete' dan tekan delete untuk menghapus jadwal.", "Help");
+
+        }
+        private void btnHelpHabit_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Centang box pada 'List Habit' untuk memilih habit yang akan diaktifkan, kemudian tekan tombol 'Aktifkan Habit'. \n" +
+                "Box 'Habit Yang Harus Dilakukan' berisikan habit yang akan datang. \n" +
+                "Habit akan muncul pada waktu yang sudah ditentukan oleh program.", "Help");
+        }
+        private void btnHelpJadwalIbadah_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(" ", "Help");
+        }
+
+        //====================================================================================================//
+        // KODE UNTUK FITUR SAVE YANG MENYIMPAN PADA DATABASE
+        //====================================================================================================//
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                Save();
+                MessageBox.Show("Settings Saved!\nApplication will load saved settings upon next startup.");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error occurred while saving. Error: " + ex.ToString());
+            }
+        }
+
+        private void Save()
+        {
+            
+            FileStream todoFS = new FileStream("todo.dat", FileMode.Create);
+            FileStream reminderFS = new FileStream("reminder.dat", FileMode.Create);
+            FileStream jadwalFS = new FileStream("jadwal.dat", FileMode.Create);
+            FileStream habitFS = new FileStream("habit.dat", FileMode.Create);
+            BinaryFormatter formatter = new BinaryFormatter();
+
+            
+            Todo[] todo = new Todo[clbTodo.Items.Count];
+            clbTodo.Items.CopyTo(todo, 0);
+            Reminder[] reminder = new Reminder[clbReminder.Items.Count];
+            clbReminder.Items.CopyTo(reminder, 0);
+            Jadwal[] jadwal = new Jadwal[lstMingguan.Items.Count];
+            lstMingguan.Items.CopyTo(jadwal, 0);
+            Habit[] habit = new Habit[lstHabit.Items.Count];
+            lstHabit.Items.CopyTo(habit, 0);
+            
+            try
+            {   
+                formatter.Serialize(todoFS, todo);
+                formatter.Serialize(reminderFS, reminder);
+                formatter.Serialize(jadwalFS, jadwal);
+                formatter.Serialize(habitFS, habit);
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show("Failed to serialize: Reason: " + e.Message);
+                throw;
+            }
+            finally
+            {
+                habitFS.Close();
+                todoFS.Close();
+                reminderFS.Close();
+                jadwalFS.Close();
+            }
+        }
+
+        private void LoadLastSession()
+        {
+            
+            Todo[] todo = null;
+            Reminder[] reminder = null;
+            Jadwal[] jadwal = null;
+            Habit[] habit = null;
+
+            FileStream habitFS;
+            FileStream todoFS;
+            FileStream reminderFS;
+            FileStream jadwalFS;
+            if (File.Exists("habit.dat") &&
+                File.Exists("todo.dat") &&
+                File.Exists("reminder.dat") &&
+                File.Exists("jadwal.dat"))
+            {
+                habitFS = new FileStream("habit.dat", FileMode.Open);
+                todoFS = new FileStream("todo.dat", FileMode.Open);
+                reminderFS = new FileStream("reminder.dat", FileMode.Open);
+                jadwalFS = new FileStream("jadwal.dat", FileMode.Open);
+            }
+            else
+            {
+                return; //No previous session found
+            }
+
+            try
+            {
+                BinaryFormatter formatter = new BinaryFormatter();
+
+                habit = (Habit[])formatter.Deserialize(habitFS);
+                todo = (Todo[])formatter.Deserialize(todoFS);
+                reminder = (Reminder[])formatter.Deserialize(reminderFS);
+                jadwal = (Jadwal[])formatter.Deserialize(jadwalFS);
+            }
+            catch (SerializationException e)
+            {
+                Console.WriteLine("Failed to deserialize. Reason: " + e.Message);
+                return;
+            }
+            finally
+            {
+                habitFS.Close();
+                todoFS.Close();
+                reminderFS.Close();
+                jadwalFS.Close();
+            }
+
+            //add all the objects to their respective lists
+            lstHabit.Items.AddRange(habit);
+            clbTodo.Items.AddRange(todo);
+            clbReminder.Items.AddRange(reminder);
+            lstMingguan.Items.AddRange(jadwal);
+
         }
 
         private void clbHabit_SelectedIndexChanged(object sender, EventArgs e)
@@ -579,29 +707,6 @@ namespace CSDAReminder
         {
 
         }
-
-        private void btnHelpHabit_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Centang box pada 'List Habit' untuk memilih habit yang akan diaktifkan, kemudian tekan tombol 'Aktifkan Habit'. \n" +
-                "Habit akan muncul pada waktu yang sudah ditentukan oleh program.", "Help");
-        }
-
-        private void btnHelpTodo_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Tuliskan To Do List yang harus dilakukan kemudian tekan tombol 'Add To Do List'." + "\n" +
-                            "Ketika list sudah dilakukan centang pada box kemudian list akan menghilang.", "Help");
-        }
-
-        private void btnSave_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void btnHelpJadwalIbadah_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void clbReminder_SelectedIndexChanged(object sender, EventArgs e)
         {
 
@@ -637,13 +742,6 @@ namespace CSDAReminder
 
         }
 
-        private void btnHelpReminder_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("Tuliskan deskripsi reminder dan pilih tanggal dan waktu nya kemudian tekan tombol 'Add'." + "\n" +
-                            "Reminder akan muncul pada box di sebelah kiri, ketika notifikasi muncul reminder akan hilang dengan sendirinya." + "\n" +
-                            "Centang reminder pada box kemudian tekan delete untuk menghapus reminder.", "Help");
-        }
-
         private void timePickerJadwal_ValueChanged(object sender, EventArgs e)
         {
 
@@ -659,16 +757,12 @@ namespace CSDAReminder
 
         }
 
-        private void btnHelpJadwal_Click(object sender, EventArgs e)
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
         {
-            MessageBox.Show("Tuliskan deskripsi jadwal dan pilih tanggal dan waktu nya kemudian tekan tombol 'Add'." + "\n" +
-                           "Jadwal akan muncul pada box 'Jadwal Minggu Ini', ketika notifikasi muncul jadwal akan hilang dengan sendirinya." + "\n" +
-                           "Box 'Jadwal Hari Ini' menunjukkan jadwal yang terdapat pada hari pada hari itu. Centang jadwal untuk menghapus jadwal yang sudah dilakukan." + "\n" +
-                           "Pilih jadwal pada kolom 'Delete' dan tekan delete untuk menghapus jadwal.", "Help");
 
         }
 
-        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        private void lblTime_Click(object sender, EventArgs e)
         {
 
         }
@@ -688,5 +782,14 @@ namespace CSDAReminder
 
         }
 
+        private void tbTodoAdd_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label7_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

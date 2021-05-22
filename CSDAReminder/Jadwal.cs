@@ -10,6 +10,7 @@ namespace CSDAReminder
     //yang dilakukan sama setiap minggu
     //seperti jadwal kuliah
 
+    [Serializable]
     public class Jadwal
     {
         public String deskripsi { get; set; }
