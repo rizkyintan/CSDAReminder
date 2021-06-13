@@ -610,7 +610,7 @@ namespace CSDAReminder
             try
             {
                 Save();
-                MessageBox.Show("Data tersimpan!\nKetika aplikasi dibuka Application will load saved settings upon next startup.");
+                MessageBox.Show("Data tersimpan!\nKetika aplikasi dibuka aplikasi akan memuat data yang telah tersimpan sebelumnya.");
             }
             catch (Exception ex)
             {
