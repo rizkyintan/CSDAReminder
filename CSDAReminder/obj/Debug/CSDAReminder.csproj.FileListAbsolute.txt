@@ -37,3 +37,7 @@ C:\Users\Microsoft\source\repos\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder
 C:\Users\Microsoft\source\repos\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.csproj.CopyComplete
 C:\Users\Microsoft\source\repos\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.exe
 C:\Users\Microsoft\source\repos\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.pdb
+C:\Users\Microsoft\Source\Repos\rizkyintan\CSDAReminder\CSDAReminder\bin\Debug\CSDAReminder.exe.manifest
+C:\Users\Microsoft\Source\Repos\rizkyintan\CSDAReminder\CSDAReminder\bin\Debug\CSDAReminder.application
+C:\Users\Microsoft\Source\Repos\rizkyintan\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.exe.manifest
+C:\Users\Microsoft\Source\Repos\rizkyintan\CSDAReminder\CSDAReminder\obj\Debug\CSDAReminder.application

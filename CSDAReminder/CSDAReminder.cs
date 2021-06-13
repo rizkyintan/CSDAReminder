@@ -584,14 +584,14 @@ namespace CSDAReminder
         {
             MessageBox.Show("Tuliskan deskripsi jadwal dan pilih tanggal dan waktu nya kemudian tekan tombol 'Add'." + "\n" +
                            "Jadwal akan muncul pada box 'Jadwal Minggu Ini', ketika notifikasi muncul jadwal akan hilang dengan sendirinya." + "\n" +
-                           "Box 'Jadwal Hari Ini' menunjukkan jadwal yang terdapat pada hari pada hari itu. Centang jadwal untuk menghapus jadwal yang sudah dilakukan." + "\n" +
+                           "Box 'Jadwal Hari Ini' menunjukkan jadwal yang terdapat pada hari itu. Centang jadwal untuk menghapus jadwal yang sudah dilakukan." + "\n" +
                            "Pilih jadwal pada kolom 'Delete' dan tekan delete untuk menghapus jadwal.", "Help");
 
         }
         private void btnHelpHabit_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Centang box pada 'List Habit' untuk memilih habit yang akan diaktifkan, kemudian tekan tombol 'Aktifkan Habit'. \n" +
-                "Box 'Habit Yang Harus Dilakukan' berisikan habit yang akan datang. \n" +
+                "Box 'Habit Yang Harus Dilakukan' berisikan habit yang akan datang pada hari itu. \n" +
                 "Habit akan muncul pada waktu yang sudah ditentukan oleh program.", "Help");
         }
         private void btnHelp_Click(object sender, EventArgs e)

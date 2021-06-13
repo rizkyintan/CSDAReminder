@@ -1,0 +1,99 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<asmv1:assembly xsi:schemaLocation="urn:schemas-microsoft-com:asm.v1 assembly.adaptive.xsd" manifestVersion="1.0" xmlns:asmv1="urn:schemas-microsoft-com:asm.v1" xmlns="urn:schemas-microsoft-com:asm.v2" xmlns:asmv2="urn:schemas-microsoft-com:asm.v2" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:co.v1="urn:schemas-microsoft-com:clickonce.v1" xmlns:asmv3="urn:schemas-microsoft-com:asm.v3" xmlns:dsig="http://www.w3.org/2000/09/xmldsig#" xmlns:co.v2="urn:schemas-microsoft-com:clickonce.v2">
+  <asmv1:assemblyIdentity name="CSDAReminder.exe" version="1.0.0.3" publicKeyToken="36f0830571fb6a06" language="neutral" processorArchitecture="msil" type="win32" />
+  <description asmv2:iconFile="iconfinder_Education-Filled_15_3672887.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
+  <application />
+  <entryPoint>
+    <assemblyIdentity name="CSDAReminder" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+    <commandLine file="CSDAReminder.exe" parameters="" />
+  </entryPoint>
+  <trustInfo>
+    <security>
+      <applicationRequestMinimum>
+        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <defaultAssemblyRequest permissionSetReference="Custom" />
+      </applicationRequestMinimum>
+      <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
+        <!--
+          UAC Manifest Options
+          If you want to change the Windows User Account Control level replace the
+          requestedExecutionLevel node with one of the following.
+
+        <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
+        <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
+        <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
+
+         If you want to utilize File and Registry Virtualization for backward
+         compatibility then delete the requestedExecutionLevel node.
+    -->
+        <requestedExecutionLevel level="asInvoker" uiAccess="false" />
+      </requestedPrivileges>
+    </security>
+  </trustInfo>
+  <dependency>
+    <dependentOS>
+      <osVersionInfo>
+        <os majorVersion="5" minorVersion="1" buildNumber="2600" servicePackMajor="0" />
+      </osVersionInfo>
+    </dependentOS>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="preRequisite" allowDelayedBinding="true">
+      <assemblyIdentity name="Microsoft.Windows.CommonLanguageRuntime" version="4.0.30319.0" />
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="CSDAReminder.exe" size="1588216">
+      <assemblyIdentity name="CSDAReminder" version="1.0.0.0" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>gvzUwTcr1J2BFfu+P5abGLqGiT9P1/Lj/ePOaH/wD2o=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EntityFramework.dll" size="4991352">
+      <assemblyIdentity name="EntityFramework" version="6.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>/0K8pwRgXhh6u0VSOGixUSjWrxworUCkV51QfTSpU7I=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="EntityFramework.SqlServer.dll" size="591752">
+      <assemblyIdentity name="EntityFramework.SqlServer" version="6.0.0.0" publicKeyToken="B77A5C561934E089" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+        <dsig:DigestValue>qWDdTS8PN7PAn/uVZ8MkJrh5ExDX65NcBMgZw9Rr1J4=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="CSDAReminder.exe.config" size="1606">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/NmCZPbdg2B72gohb73pU9AfEMInG8zTSWpK+SSKG4Y=</dsig:DigestValue>
+    </hash>
+  </file>
+  <file name="iconfinder_Education-Filled_15_3672887.ico" size="370070">
+    <hash>
+      <dsig:Transforms>
+        <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+      </dsig:Transforms>
+      <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" />
+      <dsig:DigestValue>/NcnbSHQ4DEtg7ngftghq5sr7tV5x5GMLb2qpvFJKHE=</dsig:DigestValue>
+    </hash>
+  </file>
+<publisherIdentity name="CN=LAPTOP-Q9CKAURR\Microsoft" issuerKeyHash="2099b5e241046caee599e3a82ade4d5571b4046b" /><Signature Id="StrongNameSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>UOQg5feJFy5n7Aqdk/2bK+143PzhwNo5U8f6QqC7EqE=</DigestValue></Reference></SignedInfo><SignatureValue>HWKDHL8Yln335Z0PlHpp7lJymmv6XzyksZH3DY52SGIgBi8qMlV/uw8zg2i4sAwfbvFhX4GtQVEAt+MopIgQxr7nGv01WcbNVOjj8XYiuBMk98naKo0wCCzL7TU4xR3IrwWmC6Hekqf7HjQq6IiHDQ7qpZKNqfKUbeL98jFfzQ4=</SignatureValue><KeyInfo Id="StrongNameKeyInfo"><KeyValue><RSAKeyValue><Modulus>tBbUlI13B8R1rFADbyS6wNP/8I3nEFXQNES643Q2qYD/HB1cL+lWTYODyxBdWtJj24c8rYVg2fDohoanp/NPuV6DBpczOVkipmQjCWKXGXlyMgrkkqEmBvzScOuCNtHrNfv/Gif/aTvkwzK0nTeXkzXeWT4jbzXna55BYyzeJE0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><msrel:RelData xmlns:msrel="http://schemas.microsoft.com/windows/rel/2005/reldata"><r:license xmlns:r="urn:mpeg:mpeg21:2003:01-REL-R-NS" xmlns:as="http://schemas.microsoft.com/windows/pki/2005/Authenticode"><r:grant><as:ManifestInformation Hash="a112bba042fac75339dac0e1fcdc78ed2b9bfd939d0aec672e1789f7e520e450" Description="" Url=""><as:assemblyIdentity name="CSDAReminder.exe" version="1.0.0.3" publicKeyToken="36f0830571fb6a06" language="neutral" processorArchitecture="msil" type="win32" /></as:ManifestInformation><as:SignedBy /><as:AuthenticodePublisher><as:X509SubjectName>CN=LAPTOP-Q9CKAURR\Microsoft</as:X509SubjectName></as:AuthenticodePublisher></r:grant><r:issuer><Signature Id="AuthenticodeSignature" xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /><Transform Algorithm="http://www.w3.org/2001/10/xml-exc-c14n#" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha256" /><DigestValue>N/LaLPIMzmxSbApndn3e/W6TdWFBkDnkM1FmSneeAmo=</DigestValue></Reference></SignedInfo><SignatureValue>XGEJylEwk/IoPTPsftUtukpNddfmHibkt+8WEIwS83Dc4m70OjOWFWVC5gXat3GmwvFOyUnKOkLPULIh4CL+1Queaf9je51414ST3F0WPnGg5RIptJTBXxUIl6eIT7byydaNOHEHXdC2MDf2h0bKI6o2E9/MR+bwSvHI/TQF3F8=</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>tBbUlI13B8R1rFADbyS6wNP/8I3nEFXQNES643Q2qYD/HB1cL+lWTYODyxBdWtJj24c8rYVg2fDohoanp/NPuV6DBpczOVkipmQjCWKXGXlyMgrkkqEmBvzScOuCNtHrNfv/Gif/aTvkwzK0nTeXkzXeWT4jbzXna55BYyzeJE0=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>MIIB/TCCAWagAwIBAgIQdmZvpcUKVL5EOAcIezWgXDANBgkqhkiG9w0BAQsFADA9MTswOQYDVQQDHjIATABBAFAAVABPAFAALQBRADkAQwBLAEEAVQBSAFIAXABNAGkAYwByAG8AcwBvAGYAdDAeFw0yMTA2MTIxNDAzNTVaFw0yMjA2MTIyMDAzNTVaMD0xOzA5BgNVBAMeMgBMAEEAUABUAE8AUAAtAFEAOQBDAEsAQQBVAFIAUgBcAE0AaQBjAHIAbwBzAG8AZgB0MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC0FtSUjXcHxHWsUANvJLrA0//wjecQVdA0RLrjdDapgP8cHVwv6VZNg4PLEF1a0mPbhzythWDZ8OiGhqen80+5XoMGlzM5WSKmZCMJYpcZeXIyCuSSoSYG/NJw64I20es1+/8aJ/9pO+TDMrSdN5eTNd5ZPiNvNedrnkFjLN4kTQIDAQABMA0GCSqGSIb3DQEBCwUAA4GBAFnD4PAXRFFolkdO2pHllN6Qbef7Zmmvu4M0cuK8lRZIApysA1gBodMkWCUSB5I6fzQ9fS14CmEUCC1rOLcSpZGicDjK49ysnyBcKVbhiZyvnB/y/4jguNbzZe/SSax8qArC6WEXuUjj4rEZqpXtc426I1iR47GzjVat28OwfRsA</X509Certificate></X509Data></KeyInfo></Signature></r:issuer></r:license></msrel:RelData></KeyInfo></Signature></asmv1:assembly>
